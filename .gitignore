@@ -1,23 +1,16 @@
-.DS_Store
-node_modules
+# 忽略 node_modules
+/node_modules
+
+# 忽略构建输出目录
 /dist
 
+# 忽略环境变量文件
+.env*
 
-# local env files
-.env.local
-.env.*.local
+# 忽略编辑器特定的配置文件
+.vscode/
+.idea/
 
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# 忽略操作系统生成的文件
+.DS_Store
+Thumbs.db
