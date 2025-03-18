@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大模型对话界面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .chat-box {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: 500px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #e9ecef;
+            margin-right: auto;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+        .input-area {
+            display: flex;
+            margin-top: 20px;
+        }
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        #sendButton {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-box" id="chat-box"></div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="请输入消息...">
+            <button id="sendButton">发送</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const chatBox = document.getElementById("chat-box");
+            const userInput = document.getElementById("user-input");
+            const sendButton = document.getElementById("sendButton");
+
+            function addMessage(role, content) {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("message", role + "-message");
+                messageDiv.innerHTML = content;
+                chatBox.appendChild(messageDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+                return messageDiv;
+            }
+
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === "") return;
+
+                addMessage("user", message);
+                userInput.value = "";
+
+                // 模拟流式传输接收消息
+                const botMessageDiv = addMessage("bot", "");
+                let buffer = "";
+
+                // 这里应该替换为实际的流式API请求
+                const simulateStream = () => {
+                    let responses = [
+                        "好的，我来模拟一下流式传输的效果。",
+                        "流式传输可以让用户在接收数据时逐步显示内容，而不需要等待整个数据传输完成。",
+                        "这对于提升用户体验非常重要，特别是在处理大模型的长回答时。",
+                        "<div class='code-block'>console.log('这是一个代码块示例');</div>",
+                        "你可以通过这种方式在对话界面中显示代码块。"
+                    ];
+                    let i = 0;
+                    const interval = setInterval(() => {
+                        if (i < responses.length) {
+                            buffer += responses[i] + " ";
+                            botMessageDiv.innerHTML = buffer;
+                            i++;
+                        } else {
+                            clearInterval(interval);
+                        }
+                    }, 1000);
+                };
+
+                simulateStream();
+            }
+
+            userInput.addEventListener("keydown", function(event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            sendButton.addEventListener("click", sendMessage);
+        });
+    </script>
+</body>
+</html>
