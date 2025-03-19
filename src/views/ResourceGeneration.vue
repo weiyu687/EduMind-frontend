@@ -3,8 +3,8 @@
         <div class="app-card">
             <el-card style="max-width: 480px;height: 30vh;cursor: pointer;" shadow="hover" @click="click_card(0)">
                 <el-image style="width: 16.8vw; height: 15vh" src="http://0.0.0.0:8000/imgs/lesson_plan.png" :fit="fit" />
-                <div class="app-name">教案撰写助手</div>
-                <div class="app-introduce">案撰写助手是一款专为教育工作者设计的智能工具，旨在简化教案创建过程。</div>
+                <div class="app-name">PPT生成助手</div>
+                <div class="app-introduce">PPT生成助手是为教育工作者设计的智能工具，旨在自动化创建演示文稿的过程。</div>
             </el-card>
         </div>
         <div class="app-card">
@@ -31,13 +31,9 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
 function click_card(index){
     if(index === 0)
-        router.push({ path: `/design` })
+        window.location.href = 'https://www.google.com.hk/';
 }
 </script>
 

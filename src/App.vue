@@ -106,6 +106,10 @@
 <script setup>
 import {ref} from 'vue'
 import { Management,PictureFilled,Briefcase,List,TrendCharts } from '@element-plus/icons-vue';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 const url_1 = "http://0.0.0.0:8000/imgs/ai.png"
 const url_2 = "http://0.0.0.0:8000/imgs/ai_12.png"
 const url_3 = "http://0.0.0.0:8000/imgs/ai_office.png"
@@ -119,6 +123,11 @@ const selected_index = ref(0)
 
 function select_menu_index(index){
   selected_index.value = index
+  if(index === 0){
+    router.push({ path: `/` })
+  }else if(index === 1){
+    router.push({ path: `/resource` })
+  }
 }
 </script>
 
@@ -156,10 +165,10 @@ function select_menu_index(index){
   font-size: 14px;
   font-weight: 600;
   color: aliceblue;
-  margin: 2vw;
+  margin: 3vw;
 }
 .info-container{
-  margin-left: 12vw;
+  margin-left: 8vw;
   display: flex;
   flex-direction: row;
   align-items: center;

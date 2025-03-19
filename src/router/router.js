@@ -8,6 +8,18 @@ const router = createRouter({
             name: 'main',
             component: () =>
                 import ('../views/MainPage.vue')
+        },
+        {
+            path: '/design',
+            name: 'design',
+            component: () =>
+                import ('../views/LearningDesign.vue')
+        },
+        {
+            path: '/resource',
+            name: 'resource',
+            component: () =>
+                import ('../views/ResourceGeneration.vue')
         }
     ]
 })
