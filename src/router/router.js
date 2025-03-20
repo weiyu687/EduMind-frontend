@@ -20,6 +20,18 @@ const router = createRouter({
             name: 'resource',
             component: () =>
                 import ('../views/ResourceGeneration.vue')
+        },
+        {
+            path: '/practice',
+            name: 'practice',
+            component: () =>
+                import ('../views/PracticeGeneration.vue')
+        },
+        {
+            path: '/ppt-practice',
+            name: 'ppt-practice',
+            component: () =>
+                import ('../views/PracticeByPPT.vue')
         }
     ]
 })

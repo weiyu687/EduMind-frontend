@@ -127,6 +127,8 @@ function select_menu_index(index){
     router.push({ path: `/` })
   }else if(index === 1){
     router.push({ path: `/resource` })
+  }else if(index === 2){
+    router.push({ path: `/practice` })
   }
 }
 </script>
