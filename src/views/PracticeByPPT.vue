@@ -52,13 +52,79 @@
                 @click="generate_practice">生成题目</el-button>
         </div>
         <div class="output-area" v-loading="loading">
-            <div v-if="loading===false" class="questions-json">
+            <div v-if="loading === false" class="questions-json">
                 {{ questions }}
             </div>
         </div>
         <div class="view-area">
-            <div>
-                检测到
+            <div class="view-area-header">
+                检测到{{ num_questions }}道题目
+            </div>
+
+            <br>
+            <div v-if="generate_scq_num != 0">
+                -----单选题-----
+            </div>
+
+            <div class="question-container" v-for="(question, index) in scq_questions" :key=index>
+                <div class="id-question">
+                    <div>{{ question['id'] }}.</div>
+                    <div>{{ question['question'] }}</div>
+                </div>
+                <br>
+                <div v-for="(option, index_) in question['options']" :key=index_>
+                    {{ String.fromCharCode(65 + index_) }}. {{ option }}
+                </div>
+                <br>
+                <div v-for="(answer, index_) in question['answer']" :key=index_>
+                   答案：{{ String.fromCharCode(65 + Number(answer)) }}
+                </div>
+            </div>
+
+            <br>
+            <div v-if="generate_mcq_num != 0">
+                -----多选题-----
+            </div>
+
+            <div class="question-container" v-for="(question, index) in mcq_questions" :key=index>
+                <div class="id-question">
+                    <div>{{ question['id'] }}.</div>
+                    <div>{{ question['question'] }}</div>
+                </div>
+                <br>
+                <div v-for="(option, index_) in question['options']" :key=index_>
+                    {{ String.fromCharCode(65 + index_) }}. {{ option }}
+                </div>
+                <br>
+                <div>答案：{{ question['answer'] }}</div>
+            </div>
+
+            <br>
+            <div v-if="generate_tof_num != 0">
+                -----判断题-----
+            </div>
+
+            <div class="question-container" v-for="(question, index) in tof_questions" :key=index>
+                <div class="id-question">
+                    <div>{{ question['id'] }}.</div>
+                    <div>{{ question['question'] }}</div>
+                </div>
+                <br>
+                <div>答案：{{ question['answer'] }}</div>
+            </div>
+
+            <br>
+            <div v-if="generate_sa_num != 0">
+                -----简答题-----
+            </div>
+
+            <div class="question-container" v-for="(question, index) in sa_questions" :key=index>
+                <div class="id-question">
+                    <div>{{ question['id'] }}.</div>
+                    <div>{{ question['question'] }}</div>
+                </div>
+                <br>
+                <div>答案：{{ question['answer'] }}</div>
             </div>
         </div>
     </div>
@@ -80,6 +146,18 @@ const tof_num = ref(1);
 const sa_num = ref(1);
 const questions = ref('');
 
+const scq_questions = ref([]);
+const mcq_questions = ref([]);
+const tof_questions = ref([]);
+const sa_questions = ref([]);
+
+const generate_scq_num = ref(0);
+const generate_mcq_num = ref(0);
+const generate_tof_num = ref(0);
+const generate_sa_num = ref(0);
+
+const num_questions = ref(0)
+
 const loading = ref(false);
 
 function beforeUpload(file) {
@@ -100,6 +178,7 @@ function handleSuccess(response, file) {
         title: '成功',
         message: `${file.name} 上传成功`,
     });
+
     saved_filename.value = response.filename
 }
 
@@ -139,8 +218,10 @@ function generate_practice() {
         pptx_filename: saved_filename.value
     })
         .then(res => {
-            questions.value = res
+            questions.value = JSON.parse(res)
             loading.value = false
+
+            parse_question(questions.value)
         }).catch(err => {
             loading.value = false
             ElNotification.error({
@@ -149,6 +230,22 @@ function generate_practice() {
             });
         });
 }
+
+function parse_question(question_json) {
+    generate_scq_num.value = question_json['single_choice'].length
+    generate_mcq_num.value = question_json['multiple_choice'].length
+    generate_tof_num.value = question_json['true_false'].length
+    generate_sa_num.value = question_json['essay'].length
+
+    num_questions.value = question_json['single_choice'].length + question_json['multiple_choice'].length + question_json['true_false'].length + question_json['essay'].length
+
+    scq_questions.value = question_json['single_choice']
+    mcq_questions.value = question_json['multiple_choice']
+    tof_questions.value = question_json['true_false']
+    sa_questions.value = question_json['essay']
+
+}
+
 </script>
 
 
@@ -196,9 +293,29 @@ function generate_practice() {
 .output-area {
     flex: 1;
     border-right: solid #F2F3F5 4px;
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .view-area {
     flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.view-area-header {
+    font-size: 16px;
+}
+
+.question-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.id-question{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }
 </style>

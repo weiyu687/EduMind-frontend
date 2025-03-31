@@ -32,6 +32,18 @@ const router = createRouter({
             name: 'ppt-practice',
             component: () =>
                 import ('../views/PracticeByPPT.vue')
+        },
+        {
+            path: '/digital-human',
+            name: 'digital-human',
+            component: () =>
+                import ('../views/DigitalHuman.vue')
+        },
+        {
+            path: '/generate-image',
+            name: 'generate-image',
+            component: () =>
+                import ('../views/GenerateImage.vue')
         }
     ]
 })
